@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Word Scramble Game</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Carter+One&display=swap");
+            @import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200&display=swap");
+            * {
+                margin: 0;
+                padding: 0;
+                -webkit-box-sizing: border-box;
+                        box-sizing: border-box;
+            }
+            html {
+                font-size: 62.5%;
+            }
+            body {
+                width: 100vw;
+                height: 100vh;
+                background-color: #7bed9f;
+            }
+            body header {
+                width: 100vw;
+                height: 12rem;
+                background-color: #20bf6b;
+                display: -ms-grid;
+                display: grid;
+                place-items: center;
+            }
+            body header h1 {
+                font-family: 'Carter One', cursive;
+                color: white;
+                font-size: 4rem;
+                letter-spacing: 1.5rem;
+                text-transform: uppercase;
+                text-shadow: 0 0.1rem 0 #efefef, 0 0.2rem 0 #efefef, 0 0.3rem 0 #efefef, 0 0.4rem 0 #efefef, 0 2rem 0.5rem #0000001a;
+            }
+            section {
+                width: 100vw;
+                height: calc(100vh - 12rem);
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+            }
+            section .gameArea {
+                width: 52rem;
+                height: 35rem;
+                padding: 2rem 0;
+                background: #2ed573;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                font-family: 'Source Code Pro', monospace;
+                -webkit-box-shadow: 0 0.8rem 0.6rem -0.6rem black;
+                        box-shadow: 0 0.8rem 0.6rem -0.6rem black;
+            }
+            section .gameArea h3 {
+                text-align: center;
+                font-size: 2rem;
+            }
+            section .gameArea input {
+                width: 50%;
+                padding: 1.5rem 0;
+                text-align: center;
+                border-radius: 2.5rem;
+                outline: none;
+                border: none;
+                background: #dff9fb;
+                color: black;
+                margin: 3.2rem 0;
+                font-size: 1.76rem;
+            }
+            section .gameArea .hidden {
+                display: none;
+            }
+            section .gameArea button {
+                font-size: 1.6rem;
+                cursor: pointer;
+                outline: none;
+                border: #2f3542;
+                text-decoration: none;
+                margin-top: 1rem;
+                color: #eb4d4b;
+            }
+            section .gameArea button.btn {
+                font-weight: 600;
+                padding: 1.6rem 3.2rem;
+                background: white;
+                text-transform: uppercase;
+                -webkit-transition-property: all;
+                        transition-property: all;
+                -webkit-transition-duration: 0.5s;
+                        transition-duration: 0.5s;
+                -webkit-transition-timing-function: cubic-bezier(0.65, -0.25, 0.25, 1.95);
+                        transition-timing-function: cubic-bezier(0.65, -0.25, 0.25, 1.95);
+            }
+            section .gameArea button.btn:hover, section .gameArea button.btn:focus, section .gameArea button.btn:active {
+                letter-spacing: 0.2rem;
+                word-spacing: 0.32rem;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Guess The Word Game</h1>
+        </header>
+        <section>
+            <div class="gameArea">
+                <h3 class="msg"></h3>
+                <input type="text" class="hidden">
+                <button class="btn">Click Here to Start</button>
+            </div>
+        </section>
+        <script type="text/javascript">
+            const msg = document.querySelector(".msg");
+            const guess = document.querySelector('input');
+            const btn = document.querySelector('.btn');
+            let play = false;
+            let newWord = "";
+            let rword = "";
+            let sWords = ['python','javascript','c++','php','java','c#','html','css','reactjs','angular','swift','android','sql'];
+            const createNewWords = () => {
+                let rnum = Math.floor(Math.random() * sWords.length);
+                let newSword = sWords[rnum];
+                return newSword;
+            }
+            const scrambleWords = (arr) => {
+                for (let i = arr.length-1; i>0; i--){
+                    let temp = arr[i];
+                    let j = Math.floor(Math.random()*(i+1));
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+                return arr;
+            }
+            btn.addEventListener('click', function(){
+                if(!play){
+                    play=true;
+                    btn.innerHTML = "Guess";
+                    guess.classList.toggle('hidden');
+                    newWord = createNewWords();
+                    rWord = scrambleWords(newWord.split("")).join("");
+                    msg.innerHTML = `Guess The Word : ${rWord}`;
+                }
+                else{
+                    let tempWord = guess.value;
+                    if(tempWord === newWord){
+                        play=false;
+                        msg.innerHTML = `Awesome ! Your answer is Correct : ${newWord}`;
+                        btn.innerHTML = "Start Again";
+                        guess.classList.toggle('hidden');
+                        guess.value="";
+                    }
+                    else{
+                        msg.innerHTML = `Sorry ! Your Answer is Incorrect<br>Try Again : ${rWord}`;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
